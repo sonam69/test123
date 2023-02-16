@@ -1,0 +1,22 @@
+name: This is it
+on:
+  push:
+    branches:
+      - main
+      - develop
+      - "feature/**"
+jobs:
+  checks:
+    name: Run npm on Ubuntu
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: yarn install
+        run: yarn install --frozen-lockfile
+      - name: run DangerFile
+        run: yarn danger ci
+        env:
+          DANGER_GITHUB_API_TOKEN: ${{ secrets.DANGER_API_TOKEN }}
